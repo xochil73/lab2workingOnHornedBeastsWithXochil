@@ -52,7 +52,7 @@ HornMaker.prototype.render = function(){
   $clone.find('p').text(this.description);
   $clone.find('img').attr('src', this.image_url);
   $clone.removeClass('clone');
-  $clone.attr('class', this.title);
+  $clone.attr('class', this.keyword);
 };
 
 // let trial = new HornMaker('description',4,'image_url','keyword','title');
@@ -78,31 +78,39 @@ HornMaker.prototype.render = function(){
 //   $('img').hide()
   // $(`img[data-flavor="${$selection}"]`).show()
 // })
+// select box filtering
 
-$('select[name="horned"]').on('change',function(){
+$('select[name="horned"]').on('change', function() {
   let $selection = $(this).val();
-  let $playAround = $(this);
-  console.log($playAround);
-  console.log($selection);
-  $('img').hide();
+  $('img').hide()
+  $(`img[keyword="${$selection}"]`).show()
+})
+
+
+// $('select[name="horned"]').on('change',function(){
+//   let $selection = $(this).val();
+//   let $playAround = $(this);
+//   console.log($playAround);
+//   console.log($selection);
+//   $('img').hide();
   
   // $(`img[keyword="${$selection}"]`).show();
 
-  let url = "https://www.dhresource.com/0x0s/f2-albu-g5-M00-1A-….jpg/wholesale-halloween-costume-prop-unicorn.jpg";
+  // let url = "https://www.dhresource.com/0x0s/f2-albu-g5-M00-1A-….jpg/wholesale-halloween-costume-prop-unicorn.jpg";
 
-  url.show();
+  // url.show();
 
-  for (let i = 0; i < hornedBeasts.length; i ++){
-    console.log(hornedBeasts[i].keyword);
-    if (hornedBeasts[i].keyword === $selection){
-      console.log('found it', hornedBeasts[i].keyword);
-      hornedBeasts[i].show();
+  // for (let i = 0; i < hornedBeasts.length; i ++){
+  //   console.log(hornedBeasts[i].keyword);
+  //   if (hornedBeasts[i].keyword === $selection){
+  //     console.log('found it', hornedBeasts[i].keyword);
+  //     hornedBeasts[i].show();
 
       // hornedBeasts[i].keyword.show();
 
-    }
+  //   }
 
-  }
+  // }
   // $(`img[description="${$selection}"]`).show();
 
   
@@ -112,24 +120,24 @@ $('select[name="horned"]').on('change',function(){
 
 
 
-});
+// });
 
-let shower = () => {
-  $('img').show();
-};
+// let shower = () => {
+//   $('img').show();
+// };
 
-const image = $('img');
-console.log(image);
+// const image = $('img');
+// console.log(image);
 
 
-let imgArr = [];
-let imgAsker = function (){
-  let image = $('img');
-  imgArr.push(image);
-  console.log(image);
-};
+// let imgArr = [];
+// let imgAsker = function (){
+//   let image = $('img');
+//   imgArr.push(image);
+//   console.log(image);
+// };
 
-imgAsker();
+// imgAsker();
 
 
 
@@ -144,5 +152,10 @@ imgAsker();
 //   console.log($whereToGo);
 
 // });
+
+// DOM-ready function
+$(document).ready(function() {
+  $('.tab-content').hide()
+})
 
 
