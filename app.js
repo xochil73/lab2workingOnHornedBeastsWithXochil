@@ -76,9 +76,15 @@ HornMaker.prototype.render = function(){
 };
 
 function renderMoreBeasts() {
+  let mainy = $('div[name="hide"]').hide();
   moreHornedBeasts.forEach(beast => {
-    let mainy = $('div[name="hide"]').hide();
-    console.log(beast);
+    beast.render();
+  });
+}
+
+function renderOriginalBeasts() {
+  let mainy = $('div[name="hide"]').hide();
+  hornedBeasts.forEach(beast => {
     beast.render();
   });
 }
@@ -86,16 +92,8 @@ function renderMoreBeasts() {
 //button for additional horned beasts
 let buttonForMoreBeasts = $('button[name=placeholder]').on('click',renderMoreBeasts);
 
-console.log(hornedBeasts, moreHornedBeasts); 
-
-//filtering through both jSon pages
-// function hideClass () {
-//   let classOne = $('div[name="hide"]').val();
-//   classOne.hide();
-// }
-
-// hideClass();
-
+//button to go back to original images
+let originalBeastImages = $('button[name=original_images]').on('click', renderOriginalBeasts);
 
 // select box filtering
 
