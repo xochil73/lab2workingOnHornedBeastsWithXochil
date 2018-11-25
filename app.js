@@ -1,49 +1,67 @@
-
-// $.getJSON('mydata.json', function(data) {
-//   console.log(data);
-
-// });
-
 let hornedBeasts = [];
+let moreHornedBeasts = [];
+
+
 
 
 
 function readJson () {
   $.get('page-1.json', 'json')
     .then(data => {
-    // console.log(data);
       data.forEach(generic =>{
-        // console.log(generic);
-        new HornMaker(generic);
+        new HornMaker(generic, 1);
       });
     })
     .then(function() {
       hornedBeasts.forEach(differentGeneric => {
         differentGeneric.render();
+        differentGeneric.menu();
+      });
+    });
+
+}
+
+function readMoreJson () {
+  $.get('page-2.json', 'json')
+    .then(data => {
+      data.forEach(moreData => {
+        new HornMaker(moreData, 2);
       });
     });
 }
 
 $(() => readJson());
+$(() => readMoreJson());
 
 
-// description: "A unicorn and a narwhal nuzzling their horns"
-// horns: 1
-// image_url: "http://3.bp.blogspot.com/_DBYF1AdFaHw/TE-f0cDQ24I/AAAAAAAACZg/l-FdTZ6M7z8/s1600/Unicorn_and_Narwhal_by_dinglehopper.jpg"
-// keyword: "narwhal"
-// title: "UniWhal"
-
-
-let HornMaker = function(catchall){
+let HornMaker = function(catchall, page){
   this.image_url = catchall.image_url;
   this.title = catchall.title;
   this.description = catchall.description;
   this.horns = catchall.horns;
   this.keyword = catchall.keyword;
-  hornedBeasts.push(this);
+  this.page = page;
+  if(page === 1) {
+    this.class= 'one';
+    hornedBeasts.push(this);
+  }
+  else if(page === 2) {
+    this.class= 'two';
+    moreHornedBeasts.push(this);
+  }
+};
+
+HornMaker.prototype.menu = function () {
+  $('select').append('<option class = "option"></option>');
+  let $option =$('option[class="option"]');
+  $option.attr('value', this.keyword);
+  $option.text(this.keyword);
+
+  $option.removeClass('option');
 };
 
 HornMaker.prototype.render = function(){
+  //$('div').hide();
   $('main').append('<div class="clone"></div>');
   let $clone = $('div[class="clone"]');
   let photoTemplate = $('#photo-template').html();
@@ -52,97 +70,45 @@ HornMaker.prototype.render = function(){
   $clone.find('p').text(this.description);
   $clone.find('img').attr('src', this.image_url);
   $clone.removeClass('clone');
-  $clone.attr('class', this.title);
+  $clone.attr('class', this.keyword );
+  $clone.attr('name', 'hide' );
+  
 };
 
-// let trial = new HornMaker('description',4,'image_url','keyword','title');
+function renderMoreBeasts() {
+  moreHornedBeasts.forEach(beast => {
+    let mainy = $('div[name="hide"]').hide();
+    console.log(beast);
+    beast.render();
+  });
+}
 
-//  let myArr = ['myData1', 'myData2', ];
+//button for additional horned beasts
+let buttonForMoreBeasts = $('button[name=placeholder]').on('click',renderMoreBeasts);
 
-//  console.log(myArr[0]);
+console.log(hornedBeasts, moreHornedBeasts); 
+
+//filtering through both jSon pages
+// function hideClass () {
+//   let classOne = $('div[name="hide"]').val();
+//   classOne.hide();
+// }
+
+// hideClass();
 
 
-{/* <header>
-<h1>The Gallery of Horns</h1>
-<select id="tryMe" name="horned">
-  <option value="default">Filter by Keyword</option>
-  <option value="narwhal">narwhal</option>
-  <option value="rhino">rhino</option>
-  <option value="unicorn">unicorn</option> */}
+// select box filtering
 
-
-// $('select[name="icecream"]').on('change', function() {
-  
-//   let $selection = $(this).val();
-//   console.log($selection);
-//   $('img').hide()
-  // $(`img[data-flavor="${$selection}"]`).show()
-// })
-
-$('select[name="horned"]').on('change',function(){
+$('select[name="horned"]').on('change', function() {
   let $selection = $(this).val();
-  let $playAround = $(this);
-  console.log($playAround);
-  console.log($selection);
-  $('img').hide();
-  
-  // $(`img[keyword="${$selection}"]`).show();
-
-  let url = "https://www.dhresource.com/0x0s/f2-albu-g5-M00-1A-….jpg/wholesale-halloween-costume-prop-unicorn.jpg";
-
-  url.show();
-
-  for (let i = 0; i < hornedBeasts.length; i ++){
-    console.log(hornedBeasts[i].keyword);
-    if (hornedBeasts[i].keyword === $selection){
-      console.log('found it', hornedBeasts[i].keyword);
-      hornedBeasts[i].show();
-
-      // hornedBeasts[i].keyword.show();
-
-    }
-
-  }
-  // $(`img[description="${$selection}"]`).show();
-
-  
-  // $(`img[description: "A unicorn and a narwhal nuzzling their horns"]`).show();
-
-  // hornedBeasts[0].image_url.show();  
-
-
-
+  $('div').hide();
+  $(`div[class="${$selection}"]`).show();
 });
 
-let shower = () => {
-  $('img').show();
-};
-
-const image = $('img');
-console.log(image);
 
 
-let imgArr = [];
-let imgAsker = function (){
-  let image = $('img');
-  imgArr.push(image);
-  console.log(image);
-};
-
-imgAsker();
-
-
-
-// let tryIt = $('select');
-// console.log(tryIt.html);
-
-// let tryAgain = $('tryMe');
-// // console.log(tryAgain);
-
-// tryIt.on('click', function(){
-//   let $whereToGo = $(this).data('keyword');
-//   console.log($whereToGo);
-
-// });
+$(document).ready(function() {
+  $('.tab-content').hide();
+});
 
 
