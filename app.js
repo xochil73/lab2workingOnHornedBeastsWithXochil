@@ -1,5 +1,5 @@
 let hornedBeasts = [];
-
+let moreHornedBeasts = [];
 
 
 
@@ -8,10 +8,8 @@ let hornedBeasts = [];
 function readJson () {
   $.get('page-1.json', 'json')
     .then(data => {
-    // console.log(data);
       data.forEach(generic =>{
-        // console.log(generic);
-        new HornMaker(generic);
+        new HornMaker(generic, 1);
       });
     })
     .then(function() {
@@ -20,18 +18,37 @@ function readJson () {
         differentGeneric.menu();
       });
     });
+
+}
+
+function readMoreJson () {
+  $.get('page-2.json', 'json')
+    .then(data => {
+      data.forEach(moreData => {
+        new HornMaker(moreData, 2);
+      });
+    });
 }
 
 $(() => readJson());
+$(() => readMoreJson());
 
 
-let HornMaker = function(catchall){
+let HornMaker = function(catchall, page){
   this.image_url = catchall.image_url;
   this.title = catchall.title;
   this.description = catchall.description;
   this.horns = catchall.horns;
   this.keyword = catchall.keyword;
-  hornedBeasts.push(this);
+  this.page = page;
+  if(page === 1) {
+    this.class= 'one';
+    hornedBeasts.push(this);
+  }
+  else if(page === 2) {
+    this.class= 'two';
+    moreHornedBeasts.push(this);
+  }
 };
 
 HornMaker.prototype.menu = function () {
@@ -39,11 +56,12 @@ HornMaker.prototype.menu = function () {
   let $option =$('option[class="option"]');
   $option.attr('value', this.keyword);
   $option.text(this.keyword);
-  
+
   $option.removeClass('option');
 };
 
 HornMaker.prototype.render = function(){
+  //$('div').hide();
   $('main').append('<div class="clone"></div>');
   let $clone = $('div[class="clone"]');
   let photoTemplate = $('#photo-template').html();
@@ -52,24 +70,43 @@ HornMaker.prototype.render = function(){
   $clone.find('p').text(this.description);
   $clone.find('img').attr('src', this.image_url);
   $clone.removeClass('clone');
-  $clone.attr('class', this.keyword);
+  $clone.attr('class', this.keyword );
+  $clone.attr('name', 'hide' );
+  
 };
 
+function renderMoreBeasts() {
+  let mainy = $('div[name="hide"]').hide();
+  moreHornedBeasts.forEach(beast => {
+    beast.render();
+  });
+}
 
+function renderOriginalBeasts() {
+  let mainy = $('div[name="hide"]').hide();
+  hornedBeasts.forEach(beast => {
+    beast.render();
+  });
+}
 
+//button for additional horned beasts
+let buttonForMoreBeasts = $('button[name=placeholder]').on('click',renderMoreBeasts);
+
+//button to go back to original images
+let originalBeastImages = $('button[name=original_images]').on('click', renderOriginalBeasts);
 
 // select box filtering
 
 $('select[name="horned"]').on('change', function() {
   let $selection = $(this).val();
-  $('div').hide()
-  $(`div[class="${$selection}"]`).show()
-})
+  $('div').hide();
+  $(`div[class="${$selection}"]`).show();
+});
 
 
 
 $(document).ready(function() {
-  $('.tab-content').hide()
-})
+  $('.tab-content').hide();
+});
 
 
