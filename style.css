@@ -5,3 +5,26 @@ height: 250px;
 * {
   font-family: 'Black Han Sans', sans-serif;
 }
+
+h1{
+  text-align: center;
+}
+
+div {
+  border-color: red;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+ 
+  
+}
+
+
+
+button {
+  display: flex;
+
+}
