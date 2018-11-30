@@ -1,37 +1,39 @@
 let hornedBeasts = [];
 let moreHornedBeasts = [];
 
-
-
-
-
 function readJson () {
+  
   $.get('page-1.json', 'json')
     .then(data => {
       data.forEach(generic =>{
         new HornMaker(generic, 1);
       });
+      hornedBeasts.forEach( (horn) => {
+        $('#photo-template').append(horn.toHtml());
+        horn.menu();
+        ;
+      } );  
+      
     })
-    .then(function() {
-      hornedBeasts.forEach(differentGeneric => {
-        differentGeneric.render();
-        differentGeneric.menu();
-      });
-    });
-
+    
 }
 
 function readMoreJson () {
+  console.log('reading more json'); 
   $.get('page-2.json', 'json')
     .then(data => {
       data.forEach(moreData => {
         new HornMaker(moreData, 2);
       });
+      moreHornedBeasts.forEach( (horn) => {
+        $('#photo-template').append(horn.toHtml());
+        console.log('trying again');
+      } );
     });
 }
 
 $(() => readJson());
-$(() => readMoreJson());
+// $(() => readMoreJson());
 
 
 let HornMaker = function(catchall, page){
@@ -41,6 +43,8 @@ let HornMaker = function(catchall, page){
   this.horns = catchall.horns;
   this.keyword = catchall.keyword;
   this.page = page;
+  
+  
   if(page === 1) {
     this.class= 'one';
     hornedBeasts.push(this);
@@ -52,48 +56,50 @@ let HornMaker = function(catchall, page){
 };
 
 HornMaker.prototype.menu = function () {
+  
   $('select').append('<option class = "option"></option>');
-  let $option =$('option[class="option"]');
+  let $option = $('option[class="option"]');
   $option.attr('value', this.keyword);
   $option.text(this.keyword);
 
   $option.removeClass('option');
 };
 
-HornMaker.prototype.render = function(){
-  //$('div').hide();
-  $('main').append('<div class="clone"></div>');
-  let $clone = $('div[class="clone"]');
-  let photoTemplate = $('#photo-template').html();
-  $clone.html(photoTemplate);
-  $clone.find('h1').text(this.title);
-  $clone.find('p').text(this.description);
-  $clone.find('img').attr('src', this.image_url);
-  $clone.removeClass('clone');
-  $clone.attr('class', this.keyword );
-  $clone.attr('name', 'hide' );
+
+
+//Hornmaker  prototype//
+HornMaker.prototype.toHtml = function() {
+  let templateHtml = $('#horn-template').html();
   
+  // 2. Use Handlebars to "compile" the HTML
+  let compileHornTemplate = Handlebars.compile(templateHtml);
+  // 3. Do not forget to return the HTML from this method
+  let newHornTemplate = compileHornTemplate(this);
+  
+  return newHornTemplate;
 };
 
-function renderMoreBeasts() {
-  let mainy = $('div[name="hide"]').hide();
-  moreHornedBeasts.forEach(beast => {
-    beast.render();
-  });
-}
+// function renderMoreBeasts() {
+//   let mainy = $('div[name="hide"]').hide();
+//   moreHornedBeasts.forEach(beast => {
+//     beast.render();
+//   });
+// }
 
-function renderOriginalBeasts() {
-  let mainy = $('div[name="hide"]').hide();
-  hornedBeasts.forEach(beast => {
-    beast.render();
-  });
-}
-
+// function renderOriginalBeasts() {
+//   let mainy = $('div[name="hide"]').hide();
+//   hornedBeasts.forEach(beast => {
+//     beast.render();
+//   });
+// }
 //button for additional horned beasts
-let buttonForMoreBeasts = $('button[name=placeholder]').on('click',renderMoreBeasts);
+$('button[name=placeholder]').on('click', function(){
 
+readMoreJson();
+}
+);
 //button to go back to original images
-let originalBeastImages = $('button[name=original_images]').on('click', renderOriginalBeasts);
+$('button[name=original_images]').on('click', readMoreJson);
 
 // select box filtering
 
@@ -102,6 +108,9 @@ $('select[name="horned"]').on('change', function() {
   $('div').hide();
   $(`div[class="${$selection}"]`).show();
 });
+
+
+
 
 
 
