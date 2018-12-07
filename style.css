@@ -1,9 +1,14 @@
+body {
+  background-color: bisque;
+}
+
 img {
 width: 250px;
 height: 250px;
 }
+
 * {
-  font-family: 'Black Han Sans', sans-serif;
+  font-family:  'Mali', cursive;
 }
 
 h1{
@@ -15,11 +20,25 @@ div {
 }
 
 main {
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; */
+  
+ 
+}
+
+#photo-template {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
- 
+  text-align: center;
+  justify-content: space-evenly;
   
+}
+
+#photo-template > div {
+  width: 400px;
+  height: 400px;
 }
 
 

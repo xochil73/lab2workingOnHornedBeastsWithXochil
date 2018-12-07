@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- <link rel="stylesheet" href="reset.css">
-  <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
   <title>Document</title>
 
   <script type="text/x-handlebars-template" id="horn-template">
     
-    <div class={{keyword}}>
+    <div  class={{keyword}}>
       <h2>{{title}}</h2>
       <p>{{description}}</p>
       <img src= "{{image_url}}">
-    <div>
+    </div>
   </script>
 </head>
 <body>
@@ -23,19 +23,17 @@
       <h1>The Gallery of Horns</h1>
       <select name="horned">
           <option value= "default">Filter by Keyword</option>
-          
-          
-  
-        </select>
-      
+      </select>
+      <div>
+          <button type="button" name= "placeholder">More Horny Images</button>
+          <button type="button" name= "original_images">Original Images</button>
+        </div>
     </header>
+    
+    
     <main>
-      <button type="button" name= "placeholder">More Horny Images</button>
-      <button type="button" name= "original_images">Original Images</button>
-      <section id="photo-template">
-        <h2></h2>
-        <img src="" alt="">
-        <p></p>
+      
+      <section id="photo-template" >
       </section>
     </main>
     <footer>
